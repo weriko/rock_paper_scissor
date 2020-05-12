@@ -10,8 +10,9 @@ class Player:
         self.playerno=playerno
         self.choice = "paper"
 def vs(player1, player2):
-    print(player1.choice)
-    print(player2.choice)
+    
+    #print(player1.choice)
+    #print(player2.choice)
     if player1.choice == "paper" and player2.choice =="rock":
         player1.wins.append("win")
         player2.wins.append("lose")
@@ -30,18 +31,37 @@ def vs(player1, player2):
 
 def game(players):
     pos = ["rock","paper","scissors"]
-    for i in range(len(players)-1):
+    cache = []
+    for p in players:
+        p.choice = random.choice(pos)
+        #p.choice = str(input(f"Input for , {p.playerno}"))
         
-        players[i].choice = random.choice(pos)
-        players[i+1].choice = random.choice(pos)
-        vs(players[i],players[i+1])
-        print(players[0].wins)
+    for j in range(len(players)):
+        for i in range(len(players)):
+            if i!=j:
+            
+                vs(players[j],players[i])
+
     for player in players:
         if "lose" in player.wins:
-            players.remove(player)
-    if len(players) ==1:
+    
+            cache.append(player)
+            
+            
+    players = [x for x in players if x not in cache]
+    if players ==[]:
+        print("-------------")
+        for player in cache:
+            player.wins = []
+            
+        game(cache)
+        
+    elif len(players) ==1:
+        
+        print("----",players[0].wins)
         print("wins > ",players[0].playerno)
     else:
+       
         game(players)
-        
+#,Player(playerno=3),Player(playerno=4)
 game([Player(playerno = 1),Player(playerno =2),Player(playerno=3),Player(playerno=4)])
